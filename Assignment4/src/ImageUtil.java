@@ -19,7 +19,7 @@ public class ImageUtil {
    */
   public static void readPPM(String filename) {
     Scanner sc;
-    
+
     try {
       sc = new Scanner(new FileInputStream(filename));
     } catch (FileNotFoundException e) {
