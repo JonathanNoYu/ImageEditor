@@ -1,15 +1,41 @@
 package ImageCommands.ImageOrientation;
 
-import ImageCommands.ImageCommand;
+import ImageModel.Pixel;
+import java.io.File;
 
 /**
- * a {@code ImageCommands.ImageOrientation.HorizontalFlip} represents the flipping of an image horizontally.
+ * a {@code ImageCommands.ImageOrientation.ImageOrientation.HorizontalFlip} represents the flipping
+ * of an image horizontally.
  */
-public class HorizontalFlip implements ImageCommand {
+public class HorizontalFlip implements ImageOrientation {
+
+  Pixel[][] in;
+  String fileName;
+  File out;
+
+  public HorizontalFlip(String name) {
+    this.fileName = name;
+    this.out = new File(name);
+  }
 
   @Override
-  public int[] process(int... inputs) {
+  public Pixel process(Pixel p) {
 
-    return new int[0];
+    return p;
+  }
+
+  @Override
+  public File output() {
+    return this.out;
+  }
+
+  @Override
+  public void inputFile(Pixel[][] image) {
+    this.in = in;
+  }
+
+  @Override
+  public String outputName() {
+    return this.fileName;
   }
 }

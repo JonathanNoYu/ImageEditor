@@ -1,15 +1,17 @@
 package ImageCommands.PixelOperations;
 
 import ImageCommands.ImageCommand;
+import ImageModel.Pixel;
 
 /**
- * a {@code PixelOperations.BlueGreyscale} represents a greyscale image with the blue component of the image.
+ * a {@code PixelOperations.BlueGreyscale} represents a greyscale image with the blue component of
+ * the image.
  */
 public class BlueGreyscale implements ImageCommand {
 
   @Override
-  public int[] process(int... inputs) {
+  public Pixel process(Pixel p) {
 
-    return new int[0];
+    return p;
   }
 }

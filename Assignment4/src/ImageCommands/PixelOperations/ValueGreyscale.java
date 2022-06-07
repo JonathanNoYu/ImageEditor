@@ -1,15 +1,16 @@
 package ImageCommands.PixelOperations;
 
 import ImageCommands.ImageCommand;
+import ImageModel.Pixel;
 
 /**
- *  a{@code PixelOperations.ValueGreyscale} represents the value of the greyscale.
+ * a{@code PixelOperations.ValueGreyscale} represents the value of the greyscale.
  */
 public class ValueGreyscale implements ImageCommand {
 
   @Override
-  public int[] process(int... inputs) {
-
-    return new int[0];
+  public Pixel process(Pixel p) {
+    p.setAll(p.value());
+    return p;
   }
 }

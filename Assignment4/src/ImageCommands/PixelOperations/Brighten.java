@@ -1,6 +1,7 @@
 package ImageCommands.PixelOperations;
 
 import ImageCommands.ImageCommand;
+import ImageModel.Pixel;
 
 /**
  * a {@code PixelOperations.Brighten} represents the brightening of an image.
@@ -8,8 +9,8 @@ import ImageCommands.ImageCommand;
 public class Brighten implements ImageCommand {
 
   @Override
-  public int[] process(int... inputs) {
+  public Pixel process(Pixel p) {
 
-    return new int[0];
+    return p;
   }
 }

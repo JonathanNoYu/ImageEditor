@@ -1,15 +1,40 @@
 package ImageCommands.ImageOrientation;
 
-import ImageCommands.ImageCommand;
+import ImageModel.Pixel;
+import java.io.File;
 
 /**
- *  a{@code ImageCommands.ImageOrientation.VerticalFlip} represents the class that will flip image vertically.
+ * a{@code ImageCommands.ImageOrientation.ImageOrientation.VerticalFlip} represents the class that
+ * will flip image vertically.
  */
-public class VerticalFlip implements ImageCommand {
+public class VerticalFlip implements ImageOrientation {
+
+  Pixel[][] in;
+  String fileName;
+  File out;
+
+  public VerticalFlip(String name) {
+    this.fileName = name;
+    this.out = new File(name);
+  }
 
   @Override
-  public int[] process(int... inputs) {
+  public Pixel process(Pixel p) {
+    return p;
+  }
 
-    return new int[0];
+  @Override
+  public File output() {
+    return this.out;
+  }
+
+  @Override
+  public void inputFile(Pixel[][] image) {
+    this.in = in;
+  }
+
+  @Override
+  public String outputName() {
+    return this.fileName;
   }
 }

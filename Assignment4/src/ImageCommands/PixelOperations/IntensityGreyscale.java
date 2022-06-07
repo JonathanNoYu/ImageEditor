@@ -1,6 +1,7 @@
 package ImageCommands.PixelOperations;
 
 import ImageCommands.ImageCommand;
+import ImageModel.Pixel;
 
 /**
  * a {@code PixelOperations.IntensityGreyscale} represents the intensity of the greyscale.
@@ -8,8 +9,8 @@ import ImageCommands.ImageCommand;
 public class IntensityGreyscale implements ImageCommand {
 
   @Override
-  public int[] process(int... inputs) {
+  public Pixel process(Pixel p) {
 
-    return new int[0];
+    return p;
   }
 }

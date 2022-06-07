@@ -1,15 +1,17 @@
 package ImageCommands.PixelOperations;
 
 import ImageCommands.ImageCommand;
+import ImageModel.Pixel;
 
 /**
- * a {@code PixelOperations.GreenGreyscale} represents the greyscale with the green component of the image.
+ * a {@code PixelOperations.GreenGreyscale} represents the greyscale with the green component of the
+ * image.
  */
 public class GreenGreyscale implements ImageCommand {
 
   @Override
-  public int[] process(int... inputs) {
+  public Pixel process(Pixel p) {
 
-    return new int[0];
+    return p;
   }
 }
