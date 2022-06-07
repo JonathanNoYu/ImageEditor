@@ -1,3 +1,4 @@
+import ImageCommands.PixelOperations.Greyscale;
 import ImageCommands.PixelOperations.ValueGreyscale;
 import ImageModel.ImageModelImpl;
 import static org.junit.Assert.assertEquals;
@@ -25,7 +26,7 @@ public class ImageModelImplTest {
   @Test
   public void testSaveImage() {
     try {
-      this.model1.processCommand(new ValueGreyscale(), "FakeImage","FakeImage-Output1");
+      this.model1.processCommand(new Greyscale("value-component"), "FakeImage","FakeImage-Output1");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
