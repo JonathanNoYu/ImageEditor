@@ -1,7 +1,6 @@
 package ImageCommands.ImageOrientation;
 
 import ImageModel.Pixel;
-import java.io.File;
 
 /**
  * a {@code ImageCommands.ImageOrientation.ImageOrientation.HorizontalFlip} represents the flipping
@@ -11,11 +10,10 @@ public class HorizontalFlip implements ImageOrientation {
 
   Pixel[][] in;
   String fileName;
-  File out;
+  Pixel[][] out;
 
   public HorizontalFlip(String name) {
     this.fileName = name;
-    this.out = new File(name);
   }
 
   @Override
@@ -24,15 +22,16 @@ public class HorizontalFlip implements ImageOrientation {
   }
 
   @Override
-  public File output() {
+  public Pixel[][] output() {
     return this.out;
   }
 
   @Override
   public void inputFile(Pixel[][] image) {
-    if(image == null) {
+    if (image == null) {
       throw new IllegalArgumentException("Image is missing, please load an image");
     }
     this.in = in;
+    this.out = new Pixel[in.length][in[0].length];
   }
 }

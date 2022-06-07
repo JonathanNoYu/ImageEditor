@@ -2,7 +2,6 @@ package ImageCommands.ImageOrientation;
 
 import ImageCommands.ImageCommand;
 import ImageModel.Pixel;
-import java.io.File;
 
 /**
  * An Interface for ImageCommands that specifically orient an image differently. AKA moving position
@@ -14,9 +13,9 @@ public interface ImageOrientation extends ImageCommand {
    * The Image Orientation Implementations will orient or change the positions of the pixels, we
    * need to output the pixel is some way, therefore this method outputs the augmented file.
    *
-   * @return File that has all the changes made
+   * @return the 2D Pixel array that has all the changes made
    */
-  File output();
+  Pixel[][] output();
 
   /**
    * InputFile is meant to give the command the Image it needs to then rearrange. This is to make it

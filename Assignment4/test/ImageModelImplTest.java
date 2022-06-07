@@ -29,7 +29,7 @@ public class ImageModelImplTest {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    model1.saveImage("images/FakeImage-Output1.ppm", "FakeImage-Output1");
+    model1.saveImage("images/FakeImage-Output1.ppm", "Fake-Image","FakeImage-Output1");
   }
 
   @Test
