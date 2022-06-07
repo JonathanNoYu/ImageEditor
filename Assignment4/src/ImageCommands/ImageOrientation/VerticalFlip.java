@@ -13,8 +13,8 @@ public class VerticalFlip implements ImageOrientation {
   String fileName;
   Pixel[][] out;
 
-  public VerticalFlip(String name) {
-    this.fileName = name;
+  public VerticalFlip(String fileName) {
+    this.fileName = fileName;
   }
 
   @Override
@@ -24,6 +24,11 @@ public class VerticalFlip implements ImageOrientation {
 
   @Override
   public Pixel[][] output() {
+    for (int row = 0; row < in.length; row++) {
+      for (int col = 0; col < in[0].length; col++) {
+       this.out[row][col] = this.in[row][in[0].length - col];
+      }
+    }
     return this.out;
   }
 

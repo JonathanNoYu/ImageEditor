@@ -12,8 +12,8 @@ public class HorizontalFlip implements ImageOrientation {
   String fileName;
   Pixel[][] out;
 
-  public HorizontalFlip(String name) {
-    this.fileName = name;
+  public HorizontalFlip(String fileName) {
+    this.fileName = fileName;
   }
 
   @Override
@@ -23,6 +23,11 @@ public class HorizontalFlip implements ImageOrientation {
 
   @Override
   public Pixel[][] output() {
+    for (int row = 0; row < in.length; row++) {
+      for (int col = 0; col < in[0].length; col++) {
+        this.out[row][col] = this.in[in.length - row][col];
+      }
+    }
     return this.out;
   }
 
