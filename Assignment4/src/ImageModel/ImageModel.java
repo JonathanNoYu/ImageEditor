@@ -3,6 +3,7 @@ package ImageModel;
 import ImageCommands.ImageCommand;
 import ImageCommands.ImageOrientation.ImageOrientation;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 /**
@@ -58,7 +59,7 @@ public interface ImageModel {
    *
    * @param cmd is the image command given to execute
    */
-  public void processCommand(ImageCommand cmd);
+  public void processCommand(ImageCommand cmd, String useImage, String filePath) throws IOException;
 
   /**
    * Processes a generic Image Orientation type of command that is given.
@@ -66,5 +67,5 @@ public interface ImageModel {
    *
    * @param cmd is the image orientation command given to execute
    */
-  public void processCommand(ImageOrientation cmd);
+  public void processCommand(ImageOrientation cmd, String useImage, String filePath) throws IOException;
 }

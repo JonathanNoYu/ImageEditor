@@ -20,7 +20,6 @@ public class HorizontalFlip implements ImageOrientation {
 
   @Override
   public Pixel process(Pixel p) {
-
     return p;
   }
 
@@ -31,11 +30,9 @@ public class HorizontalFlip implements ImageOrientation {
 
   @Override
   public void inputFile(Pixel[][] image) {
+    if(image == null) {
+      throw new IllegalArgumentException("Image is missing, please load an image");
+    }
     this.in = in;
-  }
-
-  @Override
-  public String outputName() {
-    return this.fileName;
   }
 }

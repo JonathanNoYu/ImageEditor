@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,6 +20,7 @@ import java.util.Scanner;
  * It can store only one image at a time and save/output images.
  */
 public class ImageModelImpl implements ImageModel {
+
   private File in; // Current loaded image
   private final Map<String, File> storedFiles; // Stored any files
   private Scanner scanFile;
@@ -80,12 +84,18 @@ public class ImageModelImpl implements ImageModel {
   public void saveImage(String path, String destName) {
     try {
       File fromStorage = storedFiles.get(destName);
-      Scanner readFile = new Scanner(fromStorage);
-      DataOutputStream outputFile = new DataOutputStream(new FileOutputStream(path));
-      while (readFile.hasNext()) { // while there is stuff in the file
-        outputFile.write(readFile.nextByte()); // it writes into the new file being outputted
+      FileReader readFile = new FileReader(fromStorage);
+      DataOutputStream output = new DataOutputStream(new FileOutputStream(path));
+      String startingData = "P3" + System.lineSeparator() + this.row
+          + " " + this.col + System.lineSeparator() + this.maxValue + System.lineSeparator();
+      output.write(startingData.getBytes(StandardCharsets.UTF_8)); // adds initial data
+      int i;
+      while ((i = readFile.read()) > -1) { // while there is stuff in the file
+//        System.out.println(i);
+        output.write((Integer.toString(i) + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
+        // it writes into the new file being outputted
       }
-      outputFile.close();
+      output.close();
     } catch (IOException e) {
       System.out.println("File failed to save");
     }
@@ -108,17 +118,26 @@ public class ImageModelImpl implements ImageModel {
 
 
   @Override
-  public void processCommand(ImageCommand cmd) {
+  public void processCommand(ImageCommand cmd, String useImage, String alis) throws IOException {
+    // Needs to change this method, so we can use any image in the storage...
+    File newFile = new File(alis);
+    FileWriter newFileWriter = new FileWriter(newFile);
     for (int i = 0; i < this.row; i++) {
       for (int j = 0; j < this.col; j++) {
-        pixels[i][j] = cmd.process(pixels[i][j]);
+        Pixel newPixel = cmd.process(pixels[i][j]); // makes a new pixel with the cmd changes
+        System.out.println(newPixel.getRed() + newPixel.getGreen() + newPixel.getBlue());
+        newFileWriter.write(newPixel.getRed()); // writes the red
+        newFileWriter.write(newPixel.getGreen()); // writes the green
+        newFileWriter.write(newPixel.getBlue()); // writes the blue
       }
     }
+    newFileWriter.close();
+    this.storedFiles.put(alis, newFile);
   }
 
   @Override
-  public void processCommand(ImageOrientation cmd) {
+  public void processCommand(ImageOrientation cmd, String useImage, String destName) throws IOException {
     cmd.inputFile(this.pixels);
-    this.storedFiles.put(cmd.outputName(), cmd.output());
+    this.storedFiles.put(useImage, cmd.output());
   }
 }

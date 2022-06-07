@@ -32,9 +32,4 @@ public class VerticalFlip implements ImageOrientation {
   public void inputFile(Pixel[][] image) {
     this.in = in;
   }
-
-  @Override
-  public String outputName() {
-    return this.fileName;
-  }
 }

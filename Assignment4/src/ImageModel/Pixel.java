@@ -18,7 +18,7 @@ public class Pixel {
    */
   public Pixel(int r, int g, int b) {
     if (r < 0 || g < 0 || b < 0
-        || r > 255 || g < 255 || b < 255) { // prim data types can never be null
+        || r > 255 || g > 255 || b > 255) { // prim data types can never be null
       throw new IllegalArgumentException("Pixels must have RGB values from 0 to 255");
     }
     this.red = r;

@@ -26,12 +26,4 @@ public interface ImageOrientation extends ImageCommand {
    * @param image is the image represented by a 2D array of pixels
    */
   void inputFile(Pixel[][] image);
-
-  /**
-   * OutputName is used to get the name of the file, so that it can be stored later in the model.
-   * Since the model does not necessarily have access to the name we need this method.
-   *
-   * @return String that represents the name the output file goes by
-   */
-  String outputName();
 }
