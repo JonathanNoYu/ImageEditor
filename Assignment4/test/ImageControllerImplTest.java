@@ -43,13 +43,34 @@ public class ImageControllerImplTest {
   }
 
   @Test
-  public void testInputsWithMocks() {
+  public void testAllWithMocks() {
     StringBuilder viewLog1 = new StringBuilder();
     StringBuilder modelLog1 = new StringBuilder();
-    StringReader inputs = new StringReader("");
+    StringReader inputs1 = new StringReader("exit");
+    StringBuilder output1 = new StringBuilder();
     MockImageModel mockModel1 = new MockImageModel(modelLog1);
-    MockImageView mockView1 = new MockImageView(mockModel1, viewLog1);
-    this.controller1 = new ImageControllerImpl(mockModel1, mockView1);
+    MockImageView mockView1 = new MockImageView(mockModel1, viewLog1, output1);
+    this.controller1 = new ImageControllerImpl(mockModel1, mockView1, inputs1);
+    this.controller1.processImage();
 
+    // Testing the starting and ending message
+    String instructions = "To load an image, please enter "
+        + "\'load <THE IMAGE PATH> <THE IMAGE ALIAS>\'"
+        + "The alis is the name we will refer to the image by. \n"
+        + "Once an image is loaded you may augment it through greyscale, brightening and "
+        + "darkening it but also flipping it horizontally or vertically\n"
+        + "The loaded image would not be modified. \n"
+        + "To save an image, please enter \'save <THE DESIRED IMAGE PATH> <THE IMAGE ALIAS>\'";
+    String endMessage = "Thanks for using our Image editor!";
+    String[] outputArray1 = output1.toString().split(System.lineSeparator());
+    assertEquals(instructions, outputArray1[0]);
+    assertEquals(endMessage, outputArray1[1]);
+
+    // Checking the inputs to the model and view
+    String desiredModelLog1 = "";
+    String desiredViewLog1 = "renderMessage Method Called Msg: To" + System.lineSeparator()
+        + "renderMessage Method Called Msg: Thanks" + System.lineSeparator();
+    assertEquals(desiredModelLog1, modelLog1.toString());
+    assertEquals(desiredViewLog1, viewLog1.toString());
   }
 }

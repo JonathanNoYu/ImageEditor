@@ -1,6 +1,5 @@
 package ImageView;
 
-import ImageModel.Pixel;
 import java.io.IOException;
 
 /**

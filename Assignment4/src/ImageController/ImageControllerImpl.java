@@ -62,6 +62,9 @@ public class ImageControllerImpl implements ImageController {
     String inputFromUser; // scanned inputs
     String pathOrImageName = null;
     String destName = null; // destination name for the image
+
+    this.instructions();
+
     while (!exit) {
       inputFromUser = this.scanString(scanFromInput);
       switch (inputFromUser) {
@@ -138,6 +141,19 @@ public class ImageControllerImpl implements ImageController {
     }
   }
 
+  private void instructions() {
+    try {
+      this.view.renderMessage("To load an image, please enter "
+          + "\'load <THE IMAGE PATH> <THE IMAGE ALIAS>\'"
+          + "The alis is the name we will refer to the image by. \n"
+          + "Once an image is loaded you may augment it through greyscale, brightening and "
+          + "darkening it but also flipping it horizontally or vertically\n"
+          + "The loaded image would not be modified. \n"
+          + "To save an image, please enter \'save <THE DESIRED IMAGE PATH> <THE IMAGE ALIAS>\'");
+    } catch (IOException e) {
+      throw new IllegalStateException(e.getMessage());
+    }
+  }
   // Renders a simple message throws an error if transmission has failed.
   private void renderMessage(String message) {
     try {

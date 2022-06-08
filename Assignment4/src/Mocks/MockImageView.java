@@ -21,9 +21,8 @@ public class MockImageView implements ImageView {
    * @param state  is the mock game
    * @param output is the outputs for the view
    */
-  public MockImageView(ImageModel state, StringBuilder output) {
-    this.log = new StringBuilder();
-    log.append(System.lineSeparator());
+  public MockImageView(ImageModel state, StringBuilder log, StringBuilder output) {
+    this.log = log;
     this.output = output;
   }
 
