@@ -7,8 +7,10 @@ import ImageCommands.PixelOperations.Brighten;
 import ImageCommands.PixelOperations.Greyscale;
 import ImageModel.ImageModel;
 import ImageView.ImageView;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -35,7 +37,7 @@ public class ImageControllerImpl implements ImageController {
    * @param view is the view of the model
    */
   public ImageControllerImpl(ImageModel model, ImageView view) {
-    this(model, view, System.in);
+    this(model, view, new InputStreamReader(System.in));
   }
 
   /**
@@ -46,7 +48,7 @@ public class ImageControllerImpl implements ImageController {
    * @param view is the view of the model
    * @param input is the inputs the user wants to give to the controller
    */
-  public ImageControllerImpl(ImageModel model, ImageView view, InputStream input) {
+  public ImageControllerImpl(ImageModel model, ImageView view, Readable input) {
     if (model == null || view == null || input == null) {
       throw new IllegalArgumentException("There must be a model, view and input");
     }
@@ -57,10 +59,11 @@ public class ImageControllerImpl implements ImageController {
 
   @Override
   public void processImage() throws IllegalStateException {
+    String inputFromUser; // scanned inputs
+    String pathOrImageName = null;
+    String destName = null; // destination name for the image
     while (!exit) {
-      String inputFromUser = this.scanString(scanFromInput);
-      String pathOrImageName = null;
-      String destName = null;
+      inputFromUser = this.scanString(scanFromInput);
       switch (inputFromUser) {
         case "load":
           pathOrImageName = this.scanString(scanFromInput);
