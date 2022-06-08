@@ -19,6 +19,12 @@ public class ImageModelImplTest {
   ImageModel model2;
   ImageModel model3;
 
+
+  /**
+   * Helper test method to check equivalence of two loaded images in two separate models.
+   * @param m1 is the first model
+   * @param m2 is the second model
+   */
   public void sameLoadedImage(ImageModel m1, ImageModel m2) {
     // Testing if the load method is the same as loading it through the constructor just in case,
     for (int row = 0; row < m1.getRow(); row ++) {
