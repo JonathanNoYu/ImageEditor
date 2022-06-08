@@ -10,6 +10,10 @@ import Mocks.MockImageView;
 import java.io.StringReader;
 import org.junit.Test;
 
+/**
+ * Testing class of the Image controller.
+ * It uses a model mock and a view mock.
+ */
 public class ImageControllerImplTest {
 
   ImageController controller1;
@@ -55,12 +59,12 @@ public class ImageControllerImplTest {
 
     // Testing the starting and ending message
     String instructions = "To load an image, please enter "
-        + "\'load <THE IMAGE PATH> <THE IMAGE ALIAS>\'"
+        + "'load <THE IMAGE PATH> <THE IMAGE ALIAS>'"
         + "The alis is the name we will refer to the image by. \n"
         + "Once an image is loaded you may augment it through greyscale, brightening and "
         + "darkening it but also flipping it horizontally or vertically\n"
         + "The loaded image would not be modified. \n"
-        + "To save an image, please enter \'save <THE DESIRED IMAGE PATH> <THE IMAGE ALIAS>\'";
+        + "To save an image, please enter 'save <THE DESIRED IMAGE PATH> <THE IMAGE ALIAS>'";
     String endMessage = "Thanks for using our Image editor!";
     String[] outputArray1 = output1.toString().split(System.lineSeparator());
     assertEquals(instructions, outputArray1[0]);
@@ -72,5 +76,26 @@ public class ImageControllerImplTest {
         + "renderMessage Method Called Msg: Thanks" + System.lineSeparator();
     assertEquals(desiredModelLog1, modelLog1.toString());
     assertEquals(desiredViewLog1, viewLog1.toString());
+
+
+    StringBuilder viewLog2 = new StringBuilder();
+    StringBuilder modelLog2 = new StringBuilder();
+    StringReader inputs2 = new StringReader("load images/FakeImage.ppm Fake-Image exit");
+    StringBuilder output2 = new StringBuilder();
+    MockImageModel mockModel2 = new MockImageModel(modelLog2);
+    MockImageView mockView2 = new MockImageView(mockModel2, viewLog2, output2);
+    this.controller2 = new ImageControllerImpl(mockModel2, mockView2, inputs2);
+    this.controller2.processImage();
+
+    String[] outputArray2 = output2.toString().split(System.lineSeparator());
+    assertEquals(instructions, outputArray2[0]);
+    assertEquals(endMessage, outputArray2[1]);
+
+    String desiredModelLog2 = "Load Image at Path: images/FakeImage.ppm Alis: Fake-Image"
+        + System.lineSeparator();
+    String desiredViewLog2 = "renderMessage Method Called Msg: To" + System.lineSeparator()
+        + "renderMessage Method Called Msg: Thanks" + System.lineSeparator();
+    assertEquals(desiredModelLog2, modelLog2.toString());
+    assertEquals(desiredViewLog2, viewLog2.toString());
   }
 }

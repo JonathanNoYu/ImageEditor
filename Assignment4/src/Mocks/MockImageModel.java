@@ -37,13 +37,13 @@ public class MockImageModel implements ImageModel {
 
   @Override
   public void loadImage(String path, String imgName) {
-    this.log.append("Load Image at Path: " + path + " Alis:" + imgName + System.lineSeparator());
+    this.log.append("Load Image at Path: " + path + " Alis: " + imgName + System.lineSeparator());
   }
 
   @Override
   public void saveImage(String path, String imageName) {
     this.log.append(
-        "Load Image at Path: " + path + " Alis:" + imageName + System.lineSeparator());
+        "Load Image at Path: " + path + " Alis: " + imageName + System.lineSeparator());
   }
 
   @Override
@@ -78,15 +78,13 @@ public class MockImageModel implements ImageModel {
   }
 
   @Override
-  public void processCommand(ImageCommand cmd, String newImageName, String filePath)
-      throws IOException {
+  public void processCommand(ImageCommand cmd, String newImageName, String filePath) {
     this.log.append("processCommand Method Called with ImageCommand cmd: " + cmd
         + " newImageName: " + newImageName + " filePath: " + filePath);
   }
 
   @Override
-  public void processCommand(ImageOrientation cmd, String newImageName, String filePath)
-      throws IOException {
+  public void processCommand(ImageOrientation cmd, String newImageName, String filePath) {
     this.log.append("processCommand Method Called with ImagineOrientation cmd: " + cmd
         + " newImageName: " + newImageName + " filePath: " + filePath);
   }
