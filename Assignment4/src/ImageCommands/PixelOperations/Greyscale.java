@@ -110,4 +110,5 @@ public class Greyscale implements ImageCommand {
     p.setBlue(p.getRed());
     return p;
   }
+
 }

@@ -15,7 +15,7 @@ public interface ImageOrientation extends ImageCommand {
    *
    * @return the 2D Pixel array that has all the changes made
    */
-  Pixel[][] output();
+  Pixel[][] outputImage();
 
   /**
    * InputFile is meant to give the command the Image it needs to then rearrange. This is to make it
@@ -24,5 +24,5 @@ public interface ImageOrientation extends ImageCommand {
    *
    * @param image is the image represented by a 2D array of pixels
    */
-  void inputFile(Pixel[][] image);
+  void inputImage(Pixel[][] image);
 }

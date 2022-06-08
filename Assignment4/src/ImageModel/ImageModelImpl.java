@@ -3,7 +3,6 @@ package ImageModel;
 import ImageCommands.ImageCommand;
 import ImageCommands.ImageOrientation.ImageOrientation;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,28 +18,38 @@ import java.util.Scanner;
  * It can store only one image at a time and save/output images.
  */
 public class ImageModelImpl implements ImageModel {
+
   private String fileName;
+  private final Map<String, Pixel[][]> storedImage; // Stored any Image as it's 2D Pixel Array
+  private int row; // loaded Image's row
+  private int col; // loaded Image's col
+  private int maxValue; // loaded Image's Maximum Value
+  private Pixel[][] pixels; // loaded Image's 2D Pixel Array
 
-  private File in; // Current loaded image
-  private final Map<String, Pixel[][]> storedImage; // Stored any files
-  private Scanner scanFile;
-  private int row;
-  private int col;
-  private int maxValue;
-  private Pixel[][] pixels;
-
+  /**
+   * Default Constructor used to create an empty ImageModel Processor without any image loaded
+   */
   public ImageModelImpl() {
     storedImage = new HashMap<>();
   }
 
-  public ImageModelImpl(String path, String imgName) {
-    this.loadImage(path, imgName);
-    this.fileName = imgName;
-    storedImage = new HashMap<>();
+  /**
+   * Constructor that immediately loads the given image with the name. Use mostly for testing.
+   *
+   * @param path is the string path of where the image is located
+   * @param alis is the name the image is going to be referred by in this model
+   */
+  public ImageModelImpl(String path, String alis) {
+    if (path == null || alis == null) {
+      throw new IllegalArgumentException("You must have an image path and image name");
+    }
+    this.storedImage = new HashMap<>();
+    this.loadImage(path, alis);
   }
 
   @Override
   public void loadImage(String path, String imgName) {
+    Scanner scanFile;
     try {
       scanFile = new Scanner(new FileInputStream(path));
       this.fileName = imgName;
@@ -54,7 +63,8 @@ public class ImageModelImpl implements ImageModel {
     while (scanFile.hasNextLine()) {
       String s = scanFile.nextLine();
       if (s.charAt(0) != '#') {
-        fileContents.append(s + System.lineSeparator());
+        fileContents.append(s);
+        fileContents.append(System.lineSeparator());
       }
     }
 
@@ -72,42 +82,36 @@ public class ImageModelImpl implements ImageModel {
     this.col = scanFile.nextInt();
     this.maxValue = scanFile.nextInt();
     this.pixels = new Pixel[row][col];
+    Pixel[][] storedPixels = new Pixel[row][col];
     for (int i = 0; i < row; i++) {
       for (int j = 0; j < col; j++) {
         int r = scanFile.nextInt(); // gets the red component value
         int g = scanFile.nextInt(); // gets the green component value
         int b = scanFile.nextInt();// gets the blue component value
-        pixels[i][j] = new Pixel(r, g, b);
+        this.pixels[i][j] = new Pixel(r, g, b);
+        storedPixels[i][j] = new Pixel(r, g, b);
       }
     }
+
+    this.storedImage.put(this.fileName, storedPixels); // Stores the load Image for convince.
   }
 
   @Override
-  public void saveImage(String path, String  imageName, String destName) {
-    Pixel[][] fromStorage;
-    if (imageName.equals(this.fileName)) {
-      fromStorage = this.pixels;
-    } else {
-      for (Entry imgName: this.storedImage.entrySet()) {
-        if (imgName.equals(imageName)) {
-          fromStorage = storedImage.get(imgName);
-        }
-      }
-      throw new IllegalArgumentException("There is no image name as " + destName);
-    }
+  public void saveImage(String path, String imageName) {
+    Pixel[][] fromStorage = this.getImage(imageName);
     try {
       DataOutputStream output = new DataOutputStream(new FileOutputStream(path));
       String startingData = "P3" + System.lineSeparator() + this.row
-          + " " + this.col + System.lineSeparator() + this.maxValue + System.lineSeparator();
+          + " " + this.col + System.lineSeparator() + this.getMaxValue(imageName) + System.lineSeparator();
       output.write(startingData.getBytes(StandardCharsets.UTF_8)); // adds initial data
       for (int row = 0; row < this.row; row++) {
         for (int col = 0; col < this.col; col++) { // while there is stuff in the file
           Pixel currPixel = fromStorage[row][col];
-          output.write((Integer.toString(currPixel.getRed()) + System.lineSeparator())
-                  .getBytes(StandardCharsets.UTF_8));
-          output.write((Integer.toString(currPixel.getGreen()) + System.lineSeparator())
+          output.write((currPixel.getRed() + System.lineSeparator())
               .getBytes(StandardCharsets.UTF_8));
-          output.write((Integer.toString(currPixel.getBlue()) + System.lineSeparator())
+          output.write((currPixel.getGreen() + System.lineSeparator())
+              .getBytes(StandardCharsets.UTF_8));
+          output.write((currPixel.getBlue() + System.lineSeparator())
               .getBytes(StandardCharsets.UTF_8));
           // it writes into the new file being outputted
         }
@@ -115,6 +119,21 @@ public class ImageModelImpl implements ImageModel {
       output.close();
     } catch (IOException e) {
       System.out.println("File failed to save, Path or Image does not exist");
+    }
+  }
+
+  @Override
+  public Pixel[][] getImage(String imageName) {
+    if (imageName.equals(this.fileName)) {
+      return this.pixels;
+    } else {
+      for (Entry<String, Pixel[][]> entry : this.storedImage.entrySet()) {
+        System.out.println(entry.getKey());
+        if (entry.getKey().equals(imageName)) {
+          return storedImage.get(imageName);
+        }
+      }
+      throw new IllegalArgumentException("There is no image name as " + imageName);
     }
   }
 
@@ -133,22 +152,40 @@ public class ImageModelImpl implements ImageModel {
     return this.col;
   }
 
+  @Override
+  public int getMaxValue(String image) {
+    if (image.equals(this.fileName)) {
+      return this.maxValue;
+    } else {
+      Pixel[][] imagePixels = this.getImage(image);
+      int max = 0;
+      for (int row = 0; row < this.row; row++) {
+        for (int col = 0; col < this.col; col++) {
+          int maxValue = imagePixels[row][col].value();
+          if (maxValue > max) {
+            max = maxValue;
+          }
+        }
+      }
+      return max;
+    }
+  }
 
   @Override
   public void processCommand(ImageCommand cmd, String image, String alis) throws IOException {
-    // Needs to change this method, so we can use any image in the storage...
     Pixel[][] newImage = new Pixel[this.row][this.col];
     for (int row = 0; row < this.row; row++) {
       for (int col = 0; col < this.col; col++) {
-        newImage[row][col] = cmd.process(pixels[row][col]);// makes a new pixel with the cmd changes
+        newImage[row][col] = cmd.process(this.pixels[row][col].copy());
+        // makes a new pixel with the cmd changes
       }
     }
     this.storedImage.put(alis, newImage);
   }
 
   @Override
-  public void processCommand(ImageOrientation cmd, String image, String destName) {
-    cmd.inputFile(this.pixels);
-    this.storedImage.put(destName, cmd.output());
+  public void processCommand(ImageOrientation cmd, String image, String alis) {
+    cmd.inputImage(this.getImage(image));
+    this.storedImage.put(alis, cmd.outputImage());
   }
 }

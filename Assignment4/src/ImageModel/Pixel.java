@@ -60,16 +60,11 @@ public class Pixel {
   }
 
   /**
-   * Sets all the components of this pixel to a valid value (0 to 255)
-   * @param val is the new int to replace all the components.
+   * This method is to copy this pixel. This is used to avoid modifying a pixel.
+   * @return the given pixel but as a new different object
    */
-  public void setAll(int val) {
-    if (val < 0 || val > 255) {
-      throw new IllegalArgumentException("Blue component can only be from 0 to 255");
-    }
-    this.red = val;
-    this.green = val;
-    this.blue = val;
+  public Pixel copy() {
+    return new Pixel(this.red, this.green, this.blue);
   }
 
   /**
@@ -118,5 +113,25 @@ public class Pixel {
    */
   public int luma() {
    return (int) ((0.2126 * this.red) + (0.7152 * this.green) + (0.0722 * this.blue));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (!(obj instanceof Pixel)) {
+      return false;
+    }
+
+    Pixel other = (Pixel) obj;
+    return this.red == other.getRed()
+        && this.green == other.getGreen()
+        && this.blue == other.getBlue();
+  }
+
+  @Override
+  public int hashCode() {
+    return this.red * 10 + this.green * 100 + this.blue * 1000;
   }
 }

@@ -20,10 +20,10 @@ public interface ImageView {
   /**
    * This method is meant to render image give by the 2D array of the pixels of the image.
    *
-   * @param image is the 2D array of the image
+   * @param imageName is the 2D array of the image
    * @throws IOException if there is a failed transmission
    */
-  void renderImage(Pixel[][] image) throws IOException;
+  void renderImage(String imageName) throws IOException;
 
   /**
    * This method renders a message to the view.

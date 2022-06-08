@@ -26,9 +26,8 @@ public interface ImageModel {
    *
    * @param path     is the path the image is going to save to
    * @param imageName is the name of the image that is wanting to be saved
-   * @param destName is the name for the file being saved
    */
-  void saveImage(String path, String  imageName, String destName);
+  void saveImage(String path, String  imageName);
 
   /**
    * Gets a specific pixel if the pixel is on the board.
@@ -40,18 +39,32 @@ public interface ImageModel {
   Pixel getPixel(int row, int col);
 
   /**
-   * Gets the total columns of the loaded image.
+   * Gets the total columns of pixels in the loaded image.
    *
    * @return int that is the columns of the loaded image.
    */
   int getCol();
 
   /**
-   * Gets the total rows of the loaded image.
+   * Gets the total rows of pixels in the loaded image.
    *
    * @return int that is the rows of the loaded image
    */
   int getRow();
+
+  /**
+   * This method returns the max value of all the pixels in the image specified.
+   * @param image is the name of the image you want to get the max value of
+   * @return the integer for the maximum value
+   */
+  int getMaxValue(String image);
+
+  /**
+   * Gets the image if the image is either loaded or stored from prior modification.
+   * @param ImageName is the name of the Image that we want to get
+   * @return a 2D Pixel Array representing the image
+   */
+  Pixel[][] getImage(String ImageName);
 
   /**
    * Processes a generic ImageCommand that is given. This command is made to execute on a given
@@ -67,5 +80,6 @@ public interface ImageModel {
    *
    * @param cmd is the image orientation command given to execute
    */
-  void processCommand(ImageOrientation cmd, String newImageName, String filePath) throws IOException;
+  void processCommand(ImageOrientation cmd, String newImageName, String filePath)
+      throws IOException;
 }
