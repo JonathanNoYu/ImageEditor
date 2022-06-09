@@ -1,5 +1,7 @@
 package ImageModel;
 
+import java.awt.Color;
+
 /**
  * A class that represents a single pixel, it is a simple object with three fields, one for each RBG
  * color and can do basic operations on those three components of a pixel.
@@ -57,6 +59,19 @@ public class Pixel {
       throw new IllegalArgumentException("Blue component can only be from 0 to 255");
     }
     this.blue = b;
+  }
+
+  /**
+   * Used to set every component in this pixel into a set value.
+   * The value must be between 0 and 255.
+   */
+  public void setAll(int val) {
+    if (val > 255 || val < 0) {
+      throw new IllegalArgumentException("Value must be between 0 and 255");
+    }
+    this.red = val;
+    this.green = val;
+    this.blue = val;
   }
 
   /**
@@ -133,5 +148,10 @@ public class Pixel {
   @Override
   public int hashCode() {
     return this.red * 10 + this.green * 100 + this.blue * 1000;
+  }
+
+  @Override
+  public String toString() {
+    return "[r = " + this.red + ",g = " + this.green + ",b = " + this.blue + "]";
   }
 }

@@ -1,10 +1,9 @@
 package ImageController;
 
 import ImageCommands.ImageCommand;
-import ImageCommands.ImageOrientation.HorizontalFlip;
-import ImageCommands.ImageOrientation.VerticalFlip;
-import ImageCommands.PixelOperations.Brighten;
+import ImageCommands.ImageOrientation.Flip;
 import ImageCommands.PixelOperations.Greyscale;
+import ImageCommands.PixelOperations.Lighting;
 import ImageModel.ImageModel;
 import ImageView.ImageView;
 import java.io.IOException;
@@ -23,7 +22,6 @@ public class ImageControllerImpl implements ImageController {
 
   private final ImageModel model;
   private final ImageView view;
-  private boolean exit = false; // when it is true we end the program
   private final Scanner scanFromInput;
   private String pathOrImageName;
   private String destName;
@@ -56,40 +54,45 @@ public class ImageControllerImpl implements ImageController {
     this.view = view;
     this.scanFromInput = new Scanner(input);
     this.commandMap.put("brighten", (s) -> {
-      ImageCommand cmd = new Brighten(this.scanInt(s));
-      this.setPathAliasCMD(s);
+      ImageCommand cmd = new Lighting(this.scanInt(s), "brighten");
+      this.setPathAlias(s);
+      return cmd;
+    });
+    this.commandMap.put("darken", (s) -> {
+      ImageCommand cmd = new Lighting(this.scanInt(s), "darken");
+      this.setPathAlias(s);
       return cmd;
     });
     this.commandMap.put("vertical-flip", (s) -> {
-      this.setPathAliasCMD(s);
-      return new VerticalFlip();
+      this.setPathAlias(s);
+      return new Flip("vertical-flip");
     });
     this.commandMap.put("horizontal-flip", (s) -> {
-      this.setPathAliasCMD(s);
-      return new HorizontalFlip();
+      this.setPathAlias(s);
+      return new Flip("horizontal-flip");
     });
     this.commandMap.put("value-component", (s) -> {
-      this.setPathAliasCMD(s);
+      this.setPathAlias(s);
       return new Greyscale("value-component");
     });
     this.commandMap.put("red-component", (s) -> {
-      this.setPathAliasCMD(s);
+      this.setPathAlias(s);
       return new Greyscale("red-component");
     });
     this.commandMap.put("green-component", (s) -> {
-      this.setPathAliasCMD(s);
+      this.setPathAlias(s);
       return new Greyscale("green-component");
     });
     this.commandMap.put("blue-component", (s) -> {
-      this.setPathAliasCMD(s);
+      this.setPathAlias(s);
       return new Greyscale("blue-component");
     });
     this.commandMap.put("intensity-component", (s) -> {
-      this.setPathAliasCMD(s);
+      this.setPathAlias(s);
       return new Greyscale("intensity-component");
     });
     this.commandMap.put("luma-component", (s) -> {
-      this.setPathAliasCMD(s);
+      this.setPathAlias(s);
       return new Greyscale("luma-component");
     });
   }
@@ -100,21 +103,26 @@ public class ImageControllerImpl implements ImageController {
 
     this.instructions();
 
-    while (!exit) {
+    while (scanFromInput.hasNext()) {
       inputFromUser = this.scanString(scanFromInput);
       switch (inputFromUser) {
         case "load":
-          pathOrImageName = this.scanString(scanFromInput);
-          destName = this.scanString(scanFromInput);
-          this.model.loadImage(pathOrImageName, destName);
+          this.setPathAlias(scanFromInput);
+          try {
+            this.model.loadImage(pathOrImageName, destName);
+          } catch (IllegalArgumentException e) {
+            this.renderMessage(e.getMessage());
+          }
           break;
         case "save":
-          pathOrImageName = this.scanString(scanFromInput);
-          destName = this.scanString(scanFromInput);
-          this.model.saveImage(pathOrImageName, destName);
+          this.setPathAlias(scanFromInput);
+          try {
+            this.model.saveImage(pathOrImageName, destName);
+          } catch (IllegalArgumentException e) {
+            this.renderMessage(e.getMessage());
+          }
           break;
         case "exit":
-          exit = true;
           this.renderMessage("Thanks for using our Image editor!");
           return;
         default:
@@ -133,6 +141,7 @@ public class ImageControllerImpl implements ImageController {
           break;
       }
     }
+    throw new IllegalStateException("Ran out of Inputs");
   }
 
 
@@ -187,7 +196,7 @@ public class ImageControllerImpl implements ImageController {
   }
 
   // Helper used to ask for a path or image name and then an destinationName/alias
-  private void setPathAliasCMD(Scanner sc) {
+  private void setPathAlias(Scanner sc) {
     pathOrImageName = this.scanString(sc);
     destName = this.scanString(sc);
   }

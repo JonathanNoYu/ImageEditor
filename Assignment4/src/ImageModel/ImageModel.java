@@ -16,8 +16,9 @@ public interface ImageModel {
    *
    * @param path    is the path the image comes from
    * @param imgName is the name the user wants to call back the file/image they loaded
+   * @throws IllegalArgumentException if the path or imageName does not exit or is invalid
    */
-  void loadImage(String path, String imgName);
+  void loadImage(String path, String imgName) throws IllegalArgumentException;
 
   /**
    * Saves/outputs an image to the specified path. This is used, so you can have may copy of the
@@ -26,8 +27,9 @@ public interface ImageModel {
    *
    * @param path     is the path the image is going to save to
    * @param imageName is the name of the image that is wanting to be saved
+   * @throws IllegalArgumentException if the path or imageName does not exit or is invalid
    */
-  void saveImage(String path, String  imageName);
+  void saveImage(String path, String  imageName) throws IllegalArgumentException;
 
   /**
    * Gets a specific pixel if the pixel is on the board.
@@ -63,8 +65,9 @@ public interface ImageModel {
    * Gets the image if the image is either loaded or stored from prior modification.
    * @param ImageName is the name of the Image that we want to get
    * @return a 2D Pixel Array representing the image
+   * @throws IllegalArgumentException when the image is not in the storage or is not loaded
    */
-  Pixel[][] getImage(String ImageName);
+  Pixel[][] getImage(String ImageName) throws IllegalArgumentException;
 
   /**
    * Processes a generic ImageCommand that is given. This command is made to execute on a given
@@ -76,7 +79,9 @@ public interface ImageModel {
 
   /**
    * Processes a generic Image Orientation type of command that is given. This command is made to
-   * execute with a given file as an input, as it orients the image.
+   * execute with a given file as an input, as it orients the image. Side note, this will be changed
+   * because dynamic dispatch can be used. However currently the top priority was to create
+   * something simple and therefore this seemed simple and straightforward.
    *
    * @param cmd is the image orientation command given to execute
    */

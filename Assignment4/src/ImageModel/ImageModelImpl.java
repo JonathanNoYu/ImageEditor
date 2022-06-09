@@ -48,14 +48,17 @@ public class ImageModelImpl implements ImageModel {
   }
 
   @Override
-  public void loadImage(String path, String imgName) {
+  public void loadImage(String path, String imgName) throws IllegalArgumentException {
+    // This has to be here since I can load a model with nothing then ask to load null Strings
+    if (path == null || imgName == null) {
+      throw new IllegalArgumentException("You must have an image path and image name");
+    }
     Scanner scanFile;
     try {
       scanFile = new Scanner(new FileInputStream(path));
       this.fileName = imgName;
     } catch (FileNotFoundException e) {
-      System.out.println("File " + imgName + " not found!");
-      return;
+      throw new IllegalArgumentException("File " + imgName + " not found!");
     }
 
     StringBuilder fileContents = new StringBuilder();
@@ -78,35 +81,35 @@ public class ImageModelImpl implements ImageModel {
       System.out.println("Invalid PPM file: plain RAW file should begin with P3");
       return;
     }
-    this.row = scanFile.nextInt();
     this.col = scanFile.nextInt();
+    this.row = scanFile.nextInt();
     this.maxValue = scanFile.nextInt();
     this.pixels = new Pixel[row][col];
     Pixel[][] storedPixels = new Pixel[row][col];
-    for (int i = 0; i < row; i++) {
-      for (int j = 0; j < col; j++) {
+    for (int row = 0; row < this.row; row++) {
+      for (int col = 0; col < this.col; col++) {
         int r = scanFile.nextInt(); // gets the red component value
         int g = scanFile.nextInt(); // gets the green component value
         int b = scanFile.nextInt();// gets the blue component value
-        this.pixels[i][j] = new Pixel(r, g, b);
-        storedPixels[i][j] = new Pixel(r, g, b);
+        this.pixels[row][col] = new Pixel(r, g, b);
+        storedPixels[row][col] = new Pixel(r, g, b);
       }
     }
-
     this.storedImage.put(this.fileName, storedPixels); // Stores the load Image for convince.
   }
 
   @Override
-  public void saveImage(String path, String imageName) {
+  public void saveImage(String path, String imageName) throws IllegalArgumentException {
     Pixel[][] fromStorage = this.getImage(imageName);
     try {
       DataOutputStream output = new DataOutputStream(new FileOutputStream(path));
-      String startingData = "P3" + System.lineSeparator() + this.row
-          + " " + this.col + System.lineSeparator() + this.getMaxValue(imageName) + System.lineSeparator();
+      String startingData = "P3" + System.lineSeparator() + this.col
+          + " " + this.row + System.lineSeparator() + this.getMaxValue(imageName)
+          + System.lineSeparator();
       output.write(startingData.getBytes(StandardCharsets.UTF_8)); // adds initial data
       for (int row = 0; row < this.row; row++) {
         for (int col = 0; col < this.col; col++) { // while there is stuff in the file
-          Pixel currPixel = fromStorage[row][col];
+          Pixel currPixel = fromStorage[row][col].copy();
           output.write((currPixel.getRed() + System.lineSeparator())
               .getBytes(StandardCharsets.UTF_8));
           output.write((currPixel.getGreen() + System.lineSeparator())
@@ -123,12 +126,11 @@ public class ImageModelImpl implements ImageModel {
   }
 
   @Override
-  public Pixel[][] getImage(String imageName) {
+  public Pixel[][] getImage(String imageName) throws IllegalArgumentException {
     if (imageName.equals(this.fileName)) {
       return this.pixels;
     } else {
       for (Entry<String, Pixel[][]> entry : this.storedImage.entrySet()) {
-        System.out.println(entry.getKey());
         if (entry.getKey().equals(imageName)) {
           return storedImage.get(imageName);
         }
@@ -172,15 +174,20 @@ public class ImageModelImpl implements ImageModel {
   }
 
   @Override
-  public void processCommand(ImageCommand cmd, String image, String alis) throws IOException {
-    Pixel[][] newImage = new Pixel[this.row][this.col];
-    for (int row = 0; row < this.row; row++) {
-      for (int col = 0; col < this.col; col++) {
-        newImage[row][col] = cmd.process(this.pixels[row][col].copy());
-        // makes a new pixel with the cmd changes
+  public void processCommand(ImageCommand cmd, String image, String alis) {
+    if (cmd.cmdType().equals("Orientation")) {
+      this.processCommand((ImageOrientation) cmd, image, alis);
+      return;
+    } else {
+      Pixel[][] newImage = new Pixel[this.row][this.col];
+      for (int row = 0; row < this.row; row++) {
+        for (int col = 0; col < this.col; col++) {
+          newImage[row][col] = cmd.process(this.pixels[row][col].copy());
+          // makes a new pixel with the cmd changes
+        }
       }
+      this.storedImage.put(alis, newImage);
     }
-    this.storedImage.put(alis, newImage);
   }
 
   @Override

@@ -43,7 +43,7 @@ public class MockImageModel implements ImageModel {
   @Override
   public void saveImage(String path, String imageName) {
     this.log.append(
-        "Load Image at Path: " + path + " Alis: " + imageName + System.lineSeparator());
+        "Save Image at Path: " + path + " Alis: " + imageName + System.lineSeparator());
   }
 
   @Override
@@ -80,12 +80,12 @@ public class MockImageModel implements ImageModel {
   @Override
   public void processCommand(ImageCommand cmd, String newImageName, String filePath) {
     this.log.append("processCommand Method Called with ImageCommand cmd: " + cmd
-        + " newImageName: " + newImageName + " filePath: " + filePath);
+        + " newImageName: " + newImageName + " filePath: " + filePath + System.lineSeparator());
   }
 
   @Override
   public void processCommand(ImageOrientation cmd, String newImageName, String filePath) {
     this.log.append("processCommand Method Called with ImagineOrientation cmd: " + cmd
-        + " newImageName: " + newImageName + " filePath: " + filePath);
+        + " newImageName: " + newImageName + " filePath: " + filePath + System.lineSeparator());
   }
 }

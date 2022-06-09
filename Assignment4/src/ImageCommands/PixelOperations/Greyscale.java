@@ -8,38 +8,36 @@ import ImageModel.Pixel;
  * in different ways.
  */
 public class Greyscale implements ImageCommand {
-  String typeGreyscale;
+  private final String type;
+
   /**
-   *
-   * @param typeGreyscale
+   * Main Constructor, must give a type of greyscale to then run. It allows non-supported greyscale
+   * because it is later check in the process switch. Additionally, this class is only called by the
+   * controller and implementors who know of it.
+   * @param type
    */
-  public Greyscale(String typeGreyscale) {
-    this.typeGreyscale = typeGreyscale;
+  public Greyscale(String type) {
+    this.type = type;
   }
 
   @Override
   public Pixel process(Pixel p) {
-    switch(this.typeGreyscale) {
+    switch(this.type) {
       case "value-component" :
-        this.valueGreyscale(p);
-        break;
+        return this.valueGreyscale(p);
       case "intensity-component":
-        this.intensity(p);
-        break;
+        return this.intensity(p);
       case "luma-component":
-        this.luma(p);
-        break;
-      case "red-greyscale":
-        this.redGreyscale(p);
-        break;
-      case "green-greyscale":
-        this.greenGreyscale(p);
-        break;
-      case "blue-greyscale":
-        this.blueGreyscale(p);
-        break;
+        return this.luma(p);
+      case "red-component":
+        return this.redGreyscale(p);
+      case "green-component":
+        return this.greenGreyscale(p);
+      case "blue-component":
+        return this.blueGreyscale(p);
+      default:
+        throw new IllegalArgumentException("There is no greyscale of " + this.type);
     }
-    return p;
   }
 
   /**
@@ -48,9 +46,10 @@ public class Greyscale implements ImageCommand {
    * @return the changed Pixel
    */
   public Pixel valueGreyscale(Pixel p) {
-    p.setBlue(p.value());
-    p.setGreen(p.value());
-    p.setRed(p.value());
+    int value = p.value();
+    p.setBlue(value);
+    p.setGreen(value);
+    p.setRed(value);
     return p;
   }
 
@@ -60,9 +59,10 @@ public class Greyscale implements ImageCommand {
    * @return the changed Pixel
    */
   public Pixel intensity(Pixel p) {
-    p.setBlue(p.intensity());
-    p.setGreen(p.intensity());
-    p.setBlue(p.intensity());
+    int intensity = p.intensity();
+    p.setRed(intensity);
+    p.setGreen(intensity);
+    p.setBlue(intensity);
     return p;
   }
 
@@ -72,9 +72,10 @@ public class Greyscale implements ImageCommand {
    * @return the changed Pixel
    */
   public Pixel luma(Pixel p) {
-    p.setBlue(p.luma());
-    p.setRed(p.luma());
-    p.setGreen(p.luma());
+    int luma = p.luma();
+    p.setRed(luma);
+    p.setBlue(luma);
+    p.setGreen(luma);
     return p;
   }
 
@@ -111,4 +112,13 @@ public class Greyscale implements ImageCommand {
     return p;
   }
 
+  @Override
+  public String toString() {
+    return this.type;
+  }
+
+  @Override
+  public String cmdType() {
+    return "ImagineCommand";
+  }
 }

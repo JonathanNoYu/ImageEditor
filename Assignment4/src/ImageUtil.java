@@ -48,12 +48,12 @@ public class ImageUtil {
     int maxValue = sc.nextInt();
     System.out.println("Maximum value of a color in this file (usually 255): " + maxValue);
 
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
         int r = sc.nextInt(); // gets the red component value
         int g = sc.nextInt(); // gets the green component value
         int b = sc.nextInt();// gets the blue component value
-        System.out.println("Color of pixel ("+j+","+i+"): "+ r+","+g+","+b);
+        System.out.println("Color of pixel ("+i+","+j+"): "+ r+","+g+","+b);
       }
     }
   }
@@ -69,7 +69,6 @@ public class ImageUtil {
     }
 
     ImageUtil.readPPM(filename);
-
   }
 }
 
