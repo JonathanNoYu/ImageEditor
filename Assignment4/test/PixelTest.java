@@ -1,7 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import ImageModel.Pixel;
+import model.Pixel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -140,7 +140,6 @@ public class PixelTest {
     assertEquals(255, this.p5.getRed());
     this.p5.setRed(78);
     assertEquals(78, this.p5.getRed());
-
   }
 
   @org.junit.Test
@@ -214,8 +213,6 @@ public class PixelTest {
     assertEquals(69, this.p5.getRed());
     assertEquals(69, this.p5.getGreen());
     assertEquals(69, this.p5.getBlue());
-
-
   }
 
   @org.junit.Test
@@ -244,7 +241,6 @@ public class PixelTest {
     assertEquals(121, this.p3.luma());
     assertEquals(132, this.p4.luma());
     assertEquals(254, this.p5.luma());
-
   }
 
   @Test

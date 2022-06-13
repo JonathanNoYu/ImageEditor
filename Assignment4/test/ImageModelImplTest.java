@@ -1,13 +1,13 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import ImageCommands.ImageOrientation.Flip;
-import ImageCommands.PixelOperations.Greyscale;
-import ImageCommands.PixelOperations.Lighting;
-import ImageModel.ImageModel;
-import ImageModel.ImageModelImpl;
-import ImageModel.Pixel;
+import command.orientation.Flip;
+import command.pixel.operations.Greyscale;
+import command.pixel.operations.Lighting;
 import java.io.IOException;
+import model.ImageModel;
+import model.ImageModelImpl;
+import model.Pixel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,21 +42,21 @@ public class ImageModelImplTest {
   @Test
   @Before
   public void testLoadImage() {
-    this.model1 = new ImageModelImpl("images/FakeImage.ppm", "Fake-Image"); // Square
+    this.model1 = new ImageModelImpl("res/FakeImage.ppm", "Fake-Image"); // Square
     assertEquals(5, this.model1.getRow());
     assertEquals(5, this.model1.getCol());
-    this.model2 = new ImageModelImpl("images/FakeImage2.ppm", "Fake2");// Square image
+    this.model2 = new ImageModelImpl("res/FakeImage2.ppm", "Fake2");// Square image
     assertEquals(3, this.model2.getRow());
     assertEquals(3, this.model2.getCol());
     this.model3 = new ImageModelImpl(); // defaults row and columns to 0
     assertEquals(0, this.model3.getRow());
     assertEquals(0, this.model3.getCol());
-    this.model3.loadImage("images/FakeImage2.ppm", "Fake2"); // Square image
+    this.model3.loadImage("res/FakeImage2.ppm", "Fake2"); // Square image
 
     // Checks if model2 and model3 are the same, they load the image differently.
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model4 = new ImageModelImpl("images/FakeImage3.ppm", "Fake3"); // Rectangular image
+    this.model4 = new ImageModelImpl("res/FakeImage3.ppm", "Fake3"); // Rectangular image
     assertEquals(4, this.model4.getRow());
     assertEquals(2, this.model4.getCol());
   }
@@ -160,136 +160,136 @@ public class ImageModelImplTest {
     assertEquals(255, this.model1.getPixel(4, 4).getGreen());
     assertEquals(255, this.model1.getPixel(4, 4).getBlue());
 
-    this.model1.saveImage("images/FakeImage-Output1.ppm", "Fake-Image");
+    this.model1.saveImage("res/FakeImage-Output1.ppm", "Fake-Image");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImage-Output1.ppm");
+    ImageUtil.readPPM("res/FakeImage-Output1.ppm");
 
     // checks before any changes
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImageOutput2-value-greyscale.ppm",
+    this.model2.saveImage("res/FakeImageOutput2-value-greyscale.ppm",
         "FakeImageOutput2-value-greyscale");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImageOutput2-value-greyscale.ppm");
+    ImageUtil.readPPM("res/FakeImageOutput2-value-greyscale.ppm");
 
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImageOutput2-horizontal-flip.ppm",
+    this.model2.saveImage("res/FakeImageOutput2-horizontal-flip.ppm",
         "FakeImageOutput2-horizontal-flip");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImageOutput2-horizontal-flip.ppm");
+    ImageUtil.readPPM("res/FakeImageOutput2-horizontal-flip.ppm");
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImage2-VFlip.ppm",
+    this.model2.saveImage("res/FakeImage2-VFlip.ppm",
         "FakeImage2-VFlip");
 
-    ImageUtil.readPPM("images/FakeImageOutput2-horizontal-flip.ppm");
-    Pixel[][] FakeImageOutput2HFlip = model2.getImage("FakeImageOutput2-horizontal-flip");
-    assertEquals(58, FakeImageOutput2HFlip[0][0].getRed());
-    assertEquals(20, FakeImageOutput2HFlip[0][0].getGreen());
-    assertEquals(90, FakeImageOutput2HFlip[0][0].getBlue());
-    assertEquals(212, FakeImageOutput2HFlip[0][1].getRed());
-    assertEquals(19, FakeImageOutput2HFlip[0][1].getGreen());
-    assertEquals(0, FakeImageOutput2HFlip[0][1].getBlue());
-    assertEquals(135, FakeImageOutput2HFlip[0][2].getRed());
-    assertEquals(55, FakeImageOutput2HFlip[0][2].getGreen());
-    assertEquals(200, FakeImageOutput2HFlip[0][2].getBlue());
-    assertEquals(3, FakeImageOutput2HFlip[1][0].getRed());
-    assertEquals(4, FakeImageOutput2HFlip[1][0].getGreen());
-    assertEquals(5, FakeImageOutput2HFlip[1][0].getBlue());
-    assertEquals(0, FakeImageOutput2HFlip[1][1].getRed());
-    assertEquals(1, FakeImageOutput2HFlip[1][1].getGreen());
-    assertEquals(2, FakeImageOutput2HFlip[1][1].getBlue());
-    assertEquals(190, FakeImageOutput2HFlip[1][2].getRed());
-    assertEquals(100, FakeImageOutput2HFlip[1][2].getGreen());
-    assertEquals(3, FakeImageOutput2HFlip[1][2].getBlue());
-    assertEquals(12, FakeImageOutput2HFlip[2][0].getRed());
-    assertEquals(13, FakeImageOutput2HFlip[2][0].getGreen());
-    assertEquals(14, FakeImageOutput2HFlip[2][0].getBlue());
-    assertEquals(9, FakeImageOutput2HFlip[2][1].getRed());
-    assertEquals(10, FakeImageOutput2HFlip[2][1].getGreen());
-    assertEquals(11, FakeImageOutput2HFlip[2][1].getBlue());
-    assertEquals(6, FakeImageOutput2HFlip[2][2].getRed());
-    assertEquals(7, FakeImageOutput2HFlip[2][2].getGreen());
-    assertEquals(8, FakeImageOutput2HFlip[2][2].getBlue());
+    ImageUtil.readPPM("res/FakeImageOutput2-horizontal-flip.ppm");
+    Pixel[][] fakeImageOutput2HFlip = model2.getImage("FakeImageOutput2-horizontal-flip");
+    assertEquals(58, fakeImageOutput2HFlip[0][0].getRed());
+    assertEquals(20, fakeImageOutput2HFlip[0][0].getGreen());
+    assertEquals(90, fakeImageOutput2HFlip[0][0].getBlue());
+    assertEquals(212, fakeImageOutput2HFlip[0][1].getRed());
+    assertEquals(19, fakeImageOutput2HFlip[0][1].getGreen());
+    assertEquals(0, fakeImageOutput2HFlip[0][1].getBlue());
+    assertEquals(135, fakeImageOutput2HFlip[0][2].getRed());
+    assertEquals(55, fakeImageOutput2HFlip[0][2].getGreen());
+    assertEquals(200, fakeImageOutput2HFlip[0][2].getBlue());
+    assertEquals(3, fakeImageOutput2HFlip[1][0].getRed());
+    assertEquals(4, fakeImageOutput2HFlip[1][0].getGreen());
+    assertEquals(5, fakeImageOutput2HFlip[1][0].getBlue());
+    assertEquals(0, fakeImageOutput2HFlip[1][1].getRed());
+    assertEquals(1, fakeImageOutput2HFlip[1][1].getGreen());
+    assertEquals(2, fakeImageOutput2HFlip[1][1].getBlue());
+    assertEquals(190, fakeImageOutput2HFlip[1][2].getRed());
+    assertEquals(100, fakeImageOutput2HFlip[1][2].getGreen());
+    assertEquals(3, fakeImageOutput2HFlip[1][2].getBlue());
+    assertEquals(12, fakeImageOutput2HFlip[2][0].getRed());
+    assertEquals(13, fakeImageOutput2HFlip[2][0].getGreen());
+    assertEquals(14, fakeImageOutput2HFlip[2][0].getBlue());
+    assertEquals(9, fakeImageOutput2HFlip[2][1].getRed());
+    assertEquals(10, fakeImageOutput2HFlip[2][1].getGreen());
+    assertEquals(11, fakeImageOutput2HFlip[2][1].getBlue());
+    assertEquals(6, fakeImageOutput2HFlip[2][2].getRed());
+    assertEquals(7, fakeImageOutput2HFlip[2][2].getGreen());
+    assertEquals(8, fakeImageOutput2HFlip[2][2].getBlue());
 
-    ImageUtil.readPPM("images/FakeImage2-VFlip.ppm");
-    Pixel[][] FakeImageOutput2VFlip = model2.getImage("FakeImage2-VFlip");
-    assertEquals(6, FakeImageOutput2VFlip[0][0].getRed());
-    assertEquals(7, FakeImageOutput2VFlip[0][0].getGreen());
-    assertEquals(8, FakeImageOutput2VFlip[0][0].getBlue());
-    assertEquals(9, FakeImageOutput2VFlip[0][1].getRed());
-    assertEquals(10, FakeImageOutput2VFlip[0][1].getGreen());
-    assertEquals(11, FakeImageOutput2VFlip[0][1].getBlue());
-    assertEquals(12, FakeImageOutput2VFlip[0][2].getRed());
-    assertEquals(13, FakeImageOutput2VFlip[0][2].getGreen());
-    assertEquals(14, FakeImageOutput2VFlip[0][2].getBlue());
-    assertEquals(190, FakeImageOutput2VFlip[1][0].getRed());
-    assertEquals(100, FakeImageOutput2VFlip[1][0].getGreen());
-    assertEquals(3, FakeImageOutput2VFlip[1][0].getBlue());
-    assertEquals(0, FakeImageOutput2VFlip[1][1].getRed());
-    assertEquals(1, FakeImageOutput2VFlip[1][1].getGreen());
-    assertEquals(2, FakeImageOutput2VFlip[1][1].getBlue());
-    assertEquals(3, FakeImageOutput2VFlip[1][2].getRed());
-    assertEquals(4, FakeImageOutput2VFlip[1][2].getGreen());
-    assertEquals(5, FakeImageOutput2VFlip[1][2].getBlue());
-    assertEquals(135, FakeImageOutput2VFlip[2][0].getRed());
-    assertEquals(55, FakeImageOutput2VFlip[2][0].getGreen());
-    assertEquals(200, FakeImageOutput2VFlip[2][0].getBlue());
-    assertEquals(212, FakeImageOutput2VFlip[2][1].getRed());
-    assertEquals(19, FakeImageOutput2VFlip[2][1].getGreen());
-    assertEquals(0, FakeImageOutput2VFlip[2][1].getBlue());
-    assertEquals(58, FakeImageOutput2VFlip[2][2].getRed());
-    assertEquals(20, FakeImageOutput2VFlip[2][2].getGreen());
-    assertEquals(90, FakeImageOutput2VFlip[2][2].getBlue());
+    ImageUtil.readPPM("res/FakeImage2-VFlip.ppm");
+    Pixel[][] fakeImageOutput2VFlip = model2.getImage("FakeImage2-VFlip");
+    assertEquals(6, fakeImageOutput2VFlip[0][0].getRed());
+    assertEquals(7, fakeImageOutput2VFlip[0][0].getGreen());
+    assertEquals(8, fakeImageOutput2VFlip[0][0].getBlue());
+    assertEquals(9, fakeImageOutput2VFlip[0][1].getRed());
+    assertEquals(10, fakeImageOutput2VFlip[0][1].getGreen());
+    assertEquals(11, fakeImageOutput2VFlip[0][1].getBlue());
+    assertEquals(12, fakeImageOutput2VFlip[0][2].getRed());
+    assertEquals(13, fakeImageOutput2VFlip[0][2].getGreen());
+    assertEquals(14, fakeImageOutput2VFlip[0][2].getBlue());
+    assertEquals(190, fakeImageOutput2VFlip[1][0].getRed());
+    assertEquals(100, fakeImageOutput2VFlip[1][0].getGreen());
+    assertEquals(3, fakeImageOutput2VFlip[1][0].getBlue());
+    assertEquals(0, fakeImageOutput2VFlip[1][1].getRed());
+    assertEquals(1, fakeImageOutput2VFlip[1][1].getGreen());
+    assertEquals(2, fakeImageOutput2VFlip[1][1].getBlue());
+    assertEquals(3, fakeImageOutput2VFlip[1][2].getRed());
+    assertEquals(4, fakeImageOutput2VFlip[1][2].getGreen());
+    assertEquals(5, fakeImageOutput2VFlip[1][2].getBlue());
+    assertEquals(135, fakeImageOutput2VFlip[2][0].getRed());
+    assertEquals(55, fakeImageOutput2VFlip[2][0].getGreen());
+    assertEquals(200, fakeImageOutput2VFlip[2][0].getBlue());
+    assertEquals(212, fakeImageOutput2VFlip[2][1].getRed());
+    assertEquals(19, fakeImageOutput2VFlip[2][1].getGreen());
+    assertEquals(0, fakeImageOutput2VFlip[2][1].getBlue());
+    assertEquals(58, fakeImageOutput2VFlip[2][2].getRed());
+    assertEquals(20, fakeImageOutput2VFlip[2][2].getGreen());
+    assertEquals(90, fakeImageOutput2VFlip[2][2].getBlue());
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImage2-VFlip.ppm");
+    ImageUtil.readPPM("res/FakeImage2-VFlip.ppm");
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImage2-IGrey.ppm",
+    this.model2.saveImage("res/FakeImage2-IGrey.ppm",
         "FakeImage2-IGrey");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImage2-IGrey.ppm");
+    ImageUtil.readPPM("res/FakeImage2-IGrey.ppm");
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImage2-LGrey.ppm",
+    this.model2.saveImage("res/FakeImage2-LGrey.ppm",
         "FakeImage2-LGrey");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImage2-LGrey.ppm");
+    ImageUtil.readPPM("res/FakeImage2-LGrey.ppm");
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImage2-RGrey.ppm",
+    this.model2.saveImage("res/FakeImage2-RGrey.ppm",
         "FakeImage2-RGrey");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImage2-RGrey.ppm");
+    ImageUtil.readPPM("res/FakeImage2-RGrey.ppm");
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImage2-GGrey.ppm",
+    this.model2.saveImage("res/FakeImage2-GGrey.ppm",
         "FakeImage2-GGrey");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImage2-GGrey.ppm");
+    ImageUtil.readPPM("res/FakeImage2-GGrey.ppm");
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
 
-    this.model2.saveImage("images/FakeImage2-BGrey.ppm",
+    this.model2.saveImage("res/FakeImage2-BGrey.ppm",
         "FakeImage2-BGrey");
 
     // Checks if the File exits and reads it
-    ImageUtil.readPPM("images/FakeImage2-BGrey.ppm");
+    ImageUtil.readPPM("res/FakeImage2-BGrey.ppm");
     // checks there is no difference in the loaded image, Model3 is the control
     this.sameLoadedImage(this.model2, this.model3);
   }
@@ -306,31 +306,31 @@ public class ImageModelImplTest {
       this.model4.processCommand(new Flip("horizontal-flip"), "Fake3",
           "Fake3HFlip");
       this.model4.processCommand(new Flip("vertical-flip"), "Fake3",
-          "Fake3VFlip");
+          "fake3VFlip");
     } catch (IOException e) {
       throw new RuntimeException(e.getMessage());
     }
-    this.model4.saveImage("images/Fake3HFlip.ppm", "Fake3HFlip");
-    this.model4.saveImage("images/Fake3VFlip.ppm", "Fake3VFlip");
-    Pixel[][] Fake3HFlip = model4.getImage("Fake3HFlip");
-    assertEquals("[r = 3,g = 4,b = 5]", Fake3HFlip[0][0].toString());
-    assertEquals("[r = 0,g = 1,b = 2]", Fake3HFlip[0][1].toString());
-    assertEquals("[r = 9,g = 10,b = 11]", Fake3HFlip[1][0].toString());
-    assertEquals("[r = 6,g = 7,b = 8]", Fake3HFlip[1][1].toString());
-    assertEquals("[r = 15,g = 16,b = 17]", Fake3HFlip[2][0].toString());
-    assertEquals("[r = 12,g = 13,b = 14]", Fake3HFlip[2][1].toString());
-    assertEquals("[r = 21,g = 22,b = 23]", Fake3HFlip[3][0].toString());
-    assertEquals("[r = 18,g = 19,b = 20]", Fake3HFlip[3][1].toString());
+    this.model4.saveImage("res/Fake3HFlip.ppm", "Fake3HFlip");
+    this.model4.saveImage("res/fake3VFlip.ppm", "fake3VFlip");
+    Pixel[][] fake3HFlip = model4.getImage("Fake3HFlip");
+    assertEquals("[r = 3,g = 4,b = 5]", fake3HFlip[0][0].toString());
+    assertEquals("[r = 0,g = 1,b = 2]", fake3HFlip[0][1].toString());
+    assertEquals("[r = 9,g = 10,b = 11]", fake3HFlip[1][0].toString());
+    assertEquals("[r = 6,g = 7,b = 8]", fake3HFlip[1][1].toString());
+    assertEquals("[r = 15,g = 16,b = 17]", fake3HFlip[2][0].toString());
+    assertEquals("[r = 12,g = 13,b = 14]", fake3HFlip[2][1].toString());
+    assertEquals("[r = 21,g = 22,b = 23]", fake3HFlip[3][0].toString());
+    assertEquals("[r = 18,g = 19,b = 20]", fake3HFlip[3][1].toString());
 
-    Pixel[][] Fake3VFlip = model4.getImage("Fake3VFlip");
-    assertEquals("[r = 18,g = 19,b = 20]", Fake3VFlip[0][0].toString());
-    assertEquals("[r = 21,g = 22,b = 23]", Fake3VFlip[0][1].toString());
-    assertEquals("[r = 12,g = 13,b = 14]", Fake3VFlip[1][0].toString());
-    assertEquals("[r = 15,g = 16,b = 17]", Fake3VFlip[1][1].toString());
-    assertEquals("[r = 6,g = 7,b = 8]", Fake3VFlip[2][0].toString());
-    assertEquals("[r = 9,g = 10,b = 11]", Fake3VFlip[2][1].toString());
-    assertEquals("[r = 0,g = 1,b = 2]", Fake3VFlip[3][0].toString());
-    assertEquals("[r = 3,g = 4,b = 5]", Fake3VFlip[3][1].toString());
+    Pixel[][] fake3VFlip = model4.getImage("fake3VFlip");
+    assertEquals("[r = 18,g = 19,b = 20]", fake3VFlip[0][0].toString());
+    assertEquals("[r = 21,g = 22,b = 23]", fake3VFlip[0][1].toString());
+    assertEquals("[r = 12,g = 13,b = 14]", fake3VFlip[1][0].toString());
+    assertEquals("[r = 15,g = 16,b = 17]", fake3VFlip[1][1].toString());
+    assertEquals("[r = 6,g = 7,b = 8]", fake3VFlip[2][0].toString());
+    assertEquals("[r = 9,g = 10,b = 11]", fake3VFlip[2][1].toString());
+    assertEquals("[r = 0,g = 1,b = 2]", fake3VFlip[3][0].toString());
+    assertEquals("[r = 3,g = 4,b = 5]", fake3VFlip[3][1].toString());
   }
 
   /**
@@ -343,7 +343,7 @@ public class ImageModelImplTest {
   public void testProcessCommandOnKoalaPPM() {
     Boolean allCommandHadRan = false;
     try {
-      this.model3.loadImage("images/Koala.ppm", "Koala");
+      this.model3.loadImage("res/Koala.ppm", "Koala");
       this.model3.processCommand(new Greyscale("value-component"), "Koala",
           "Koala-VGrey");
       this.model3.processCommand(new Flip("horizontal-flip"), "Koala",
@@ -360,20 +360,20 @@ public class ImageModelImplTest {
           "Koala-GGrey");
       this.model3.processCommand(new Greyscale("blue-component"), "Koala",
           "Koala-BGrey");
-      this.model3.processCommand(new Lighting(50,"brighten"), "Koala",
+      this.model3.processCommand(new Lighting(50, "brighten"), "Koala",
           "Koala-50darken");
       this.model3.processCommand(new Lighting(50, "darken"), "Koala",
           "Koala-50brighten");
-      this.model3.saveImage("images/Koala-VGrey.ppm", "Koala-VGrey");
-      this.model3.saveImage("images/Koala-HFlip.ppm", "Koala-HFlip");
-      this.model3.saveImage("images/Koala-VFlip.ppm", "Koala-VFlip");
-      this.model3.saveImage("images/Koala-IGrey.ppm", "Koala-IGrey");
-      this.model3.saveImage("images/Koala-LGrey.ppm", "Koala-LGrey");
-      this.model3.saveImage("images/Koala-RGrey.ppm", "Koala-RGrey");
-      this.model3.saveImage("images/Koala-GGrey.ppm", "Koala-GGrey");
-      this.model3.saveImage("images/Koala-BGrey.ppm", "Koala-BGrey");
-      this.model3.saveImage("images/Koala-50darken.ppm", "Koala-50darken");
-      this.model3.saveImage("images/Koala-50brighten.ppm", "Koala-50brighten");
+      this.model3.saveImage("res/Koala-VGrey.ppm", "Koala-VGrey");
+      this.model3.saveImage("res/Koala-HFlip.ppm", "Koala-HFlip");
+      this.model3.saveImage("res/Koala-VFlip.ppm", "Koala-VFlip");
+      this.model3.saveImage("res/Koala-IGrey.ppm", "Koala-IGrey");
+      this.model3.saveImage("res/Koala-LGrey.ppm", "Koala-LGrey");
+      this.model3.saveImage("res/Koala-RGrey.ppm", "Koala-RGrey");
+      this.model3.saveImage("res/Koala-GGrey.ppm", "Koala-GGrey");
+      this.model3.saveImage("res/Koala-BGrey.ppm", "Koala-BGrey");
+      this.model3.saveImage("res/Koala-50darken.ppm", "Koala-50darken");
+      this.model3.saveImage("res/Koala-50brighten.ppm", "Koala-50brighten");
       allCommandHadRan = true;
     } catch (IOException e) {
       throw new RuntimeException(e);

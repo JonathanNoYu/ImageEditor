@@ -1,13 +1,13 @@
 import static org.junit.Assert.assertEquals;
 
-import ImageController.ImageController;
-import ImageController.ImageControllerImpl;
-import ImageModel.ImageModel;
-import ImageModel.ImageModelImpl;
-import ImageView.ImageTextViewImpl;
-import ImageView.ImageView;
-import Mocks.MockImageModel;
-import Mocks.MockImageView;
+import controller.ImageController;
+import controller.ImageControllerImpl;
+import model.ImageModel;
+import model.ImageModelImpl;
+import view.ImageTextViewImpl;
+import view.ImageView;
+import mocks.MockImageModel;
+import mocks.MockImageView;
 import java.io.StringReader;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ public class ImageControllerImplTest {
 
   @Test
   public void testInvalidControllers() {
-    this.model1 = new ImageModelImpl("images/FakeImage.ppm", "Fake-Image");
+    this.model1 = new ImageModelImpl("res/FakeImage.ppm", "Fake-Image");
     this.out1 = new StringBuilder();
     this.view1 = new ImageTextViewImpl(this.model1, out1);
     this.in1 = new StringReader("");
@@ -92,8 +92,8 @@ public class ImageControllerImplTest {
     this.model1 = new ImageModelImpl();
     this.out1 = new StringBuilder();
     this.view1 = new ImageTextViewImpl(this.model1, out1);
-    this.in1 = new StringReader("load images/FakeImage3.ppm Fake3 "
-        + "save images/FakeImage3Save.ppm Fake3 "
+    this.in1 = new StringReader("load res/FakeImage3.ppm Fake3 "
+        + "save res/FakeImage3Save.ppm Fake3 "
         + "brighten 50 Fake3 Fake3CBrighten50 " // The C after Fake3 stands for controller
         + "darken 50 Fake3 Fake3CDarken50 "   // This is to discern if the controller works
         + "vertical-flip Fake3 Fake3CVFlip "    // With a normal mock and view.
@@ -104,16 +104,16 @@ public class ImageControllerImplTest {
         + "red-component Fake3 Fake3CRGrey "
         + "green-component Fake3 Fake3CGGrey "
         + "blue-component Fake3 Fake3CBGrey "
-        + "save images/Fake3CBrighten50.ppm Fake3CBrighten50 "
-        + "save images/Fake3CDarken50.ppm Fake3CDarken50 "
-        + "save images/Fake3CVFlip.ppm Fake3CVFlip "
-        + "save images/Fake3CHFlip.ppm Fake3CHFlip "
-        + "save images/Fake3CVGrey.ppm Fake3CVGrey "
-        + "save images/Fake3CIGrey.ppm Fake3CIGrey "
-        + "save images/Fake3CLGrey.ppm Fake3CLGrey "
-        + "save images/Fake3CRGrey.ppm Fake3CRGrey "
-        + "save images/Fake3CGGrey.ppm Fake3CGGrey "
-        + "save images/Fake3CBGrey.ppm Fake3CBGrey "
+        + "save res/Fake3CBrighten50.ppm Fake3CBrighten50 "
+        + "save res/Fake3CDarken50.ppm Fake3CDarken50 "
+        + "save res/Fake3CVFlip.ppm Fake3CVFlip "
+        + "save res/Fake3CHFlip.ppm Fake3CHFlip "
+        + "save res/Fake3CVGrey.ppm Fake3CVGrey "
+        + "save res/Fake3CIGrey.ppm Fake3CIGrey "
+        + "save res/Fake3CLGrey.ppm Fake3CLGrey "
+        + "save res/Fake3CRGrey.ppm Fake3CRGrey "
+        + "save res/Fake3CGGrey.ppm Fake3CGGrey "
+        + "save res/Fake3CBGrey.ppm Fake3CBGrey "
         + "exit");
     this.controller1 = new ImageControllerImpl(this.model1, this.view1, this.in1);
     this.controller1.processImage();
@@ -165,7 +165,7 @@ public class ImageControllerImplTest {
     //Testing all inputs/commands
     StringBuilder viewLog2 = new StringBuilder();
     StringBuilder modelLog2 = new StringBuilder();
-    StringReader inputs2 = new StringReader("load images/FakeImage.ppm Fake-Image "
+    StringReader inputs2 = new StringReader("load res/FakeImage.ppm Fake-Image "
         + "brighten 10 Fake-Image Bright-Fake-Image "
         + "darken 10 Fake-Image Darken-Fake-Image "
         + "horizontal-flip Fake-Image HFlip-Image "
@@ -176,7 +176,7 @@ public class ImageControllerImplTest {
         + "red-component Fake-Image RGrey-Fake-Image "
         + "green-component Fake-Image GGrey-Fake-Image "
         + "blue-component Fake-Image BGrey-Fake-Image "
-        + "save images/BrightFakeImage.ppm Bright-Fake-Image "
+        + "save res/BrightFakeImage.ppm Bright-Fake-Image "
         + "exit");
     StringBuilder output2 = new StringBuilder();
     MockImageModel mockModel2 = new MockImageModel(modelLog2);
@@ -189,7 +189,7 @@ public class ImageControllerImplTest {
     assertEquals(endMessage, outputArray2[1]);
 
     // Each method is seperated by the System.lineSeparator()
-    String desiredModelLog2 = "Load Image at Path: images/FakeImage.ppm Alis: Fake-Image"
+    String desiredModelLog2 = "Load Image at Path: res/FakeImage.ppm Alis: Fake-Image"
         + System.lineSeparator()
         + "processCommand Method Called with ImageCommand cmd: brighten "
         + "newImageName: Fake-Image filePath: Bright-Fake-Image"
@@ -221,7 +221,7 @@ public class ImageControllerImplTest {
         + "processCommand Method Called with ImageCommand cmd: blue-component newImageName: "
         + "Fake-Image filePath: BGrey-Fake-Image"
         + System.lineSeparator()
-        + "Save Image at Path: images/BrightFakeImage.ppm Alis: Bright-Fake-Image"
+        + "Save Image at Path: res/BrightFakeImage.ppm Alis: Bright-Fake-Image"
         + System.lineSeparator();
     String desiredViewLog2 = "renderMessage Method Called Msg: To" + System.lineSeparator()
         + "renderMessage Method Called Msg: Thanks" + System.lineSeparator();

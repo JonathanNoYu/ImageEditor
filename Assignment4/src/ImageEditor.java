@@ -1,10 +1,10 @@
 
-import ImageController.ImageController;
-import ImageController.ImageControllerImpl;
-import ImageModel.ImageModel;
-import ImageModel.ImageModelImpl;
-import ImageView.ImageTextViewImpl;
-import ImageView.ImageView;
+import controller.ImageController;
+import controller.ImageControllerImpl;
+import model.ImageModel;
+import model.ImageModelImpl;
+import view.ImageTextViewImpl;
+import view.ImageView;
 
 /**
  * Run this class's main method, and it will run start up an empty, controller, model and view.

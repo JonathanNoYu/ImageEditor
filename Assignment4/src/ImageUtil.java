@@ -53,12 +53,16 @@ public class ImageUtil {
         int r = sc.nextInt(); // gets the red component value
         int g = sc.nextInt(); // gets the green component value
         int b = sc.nextInt();// gets the blue component value
-        System.out.println("Color of pixel ("+i+","+j+"): "+ r+","+g+","+b);
+        System.out.println("Color of pixel (" + i + "," + j + "): " + r + "," + g + "," + b);
       }
     }
   }
 
-  //demo main
+  /**
+   * Demo main that runs a ppm file.
+   *
+   * @param args is the string array with the name of the file you want to read
+   */
   public static void main(String[] args) {
     String filename;
 

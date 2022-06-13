@@ -1,15 +1,15 @@
+import static org.junit.Assert.assertEquals;
+
+import command.pixel.operations.Lighting;
+import model.Pixel;
 import org.junit.Before;
 import org.junit.Test;
-
-import ImageCommands.PixelOperations.Lighting;
-import ImageModel.Pixel;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests all methods in Lighting class.
  */
 public class LightingTest {
+
   Pixel p1;
   Pixel p2;
   Pixel p3;
@@ -32,7 +32,7 @@ public class LightingTest {
 
   @Test
   public void process() {
-    Lighting b1 = new Lighting(20,"brighten");
+    Lighting b1 = new Lighting(20, "brighten");
     b1.process(p1);
     assertEquals("[r = 20,g = 20,b = 20]", this.p1.toString());
     b1.process(p2);
@@ -40,7 +40,7 @@ public class LightingTest {
     b1.process(p3);
     assertEquals("[r = 96,g = 146,b = 232]", this.p3.toString());
     init();
-    Lighting d1 = new Lighting(20,"darken");
+    Lighting d1 = new Lighting(20, "darken");
     d1.process(p1);
     assertEquals("[r = 0,g = 0,b = 0]", this.p1.toString());
     d1.process(p2);
@@ -52,10 +52,10 @@ public class LightingTest {
   @Test
   public void testToString() {
     assertEquals("[r = 0,g = 0,b = 0]", this.p1.toString());
-    Lighting b1 = new Lighting(20,"brighten");
+    Lighting b1 = new Lighting(20, "brighten");
     b1.process(p2);
     assertEquals("[r = 143,g = 23,b = 252]", this.p2.toString());
-    Lighting d1 = new Lighting(20,"darken");
+    Lighting d1 = new Lighting(20, "darken");
     d1.process(p3);
     assertEquals("[r = 56,g = 106,b = 192]", this.p3.toString());
     assertEquals("[r = 45,g = 171,b = 7]", this.p4.toString());

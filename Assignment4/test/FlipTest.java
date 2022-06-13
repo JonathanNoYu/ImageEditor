@@ -1,8 +1,8 @@
 import static org.junit.Assert.assertEquals;
 
-import ImageCommands.ImageOrientation.Flip;
-import ImageCommands.ImageOrientation.ImageOrientation;
-import ImageModel.Pixel;
+import command.orientation.Flip;
+import command.orientation.ImageOrientation;
+import model.Pixel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,11 +32,10 @@ public class FlipTest {
     // (1,2,3)      (4,5,6)      (7,8,9)      (10,11,12)
     // (13,14,15)   (16,17,18)   (19,20,21)   (22,23,24)
 
-
     // Pixel[2][2] below i.e. 2 rows and 2 columns a square
     image2 = new Pixel[][]{new Pixel[]{new Pixel(1, 2, 3),
         new Pixel(4, 5, 6)}, new Pixel[]{new Pixel(7, 8, 9),
-        new Pixel(10, 11, 12)}};
+          new Pixel(10, 11, 12)}};
     // Visualization below of original image2
     // (1,2,3)   (4,5,6)
     // (7,8,9)   (10,11,12)
@@ -44,7 +43,7 @@ public class FlipTest {
     hFlip1 = new Flip("horizontal-flip");
     vFlip1 = new Flip("vertical-flip");
     hFlip2 = new Flip("horizontal-flip");
-    vFlip2= new Flip("vertical-flip");
+    vFlip2 = new Flip("vertical-flip");
   }
 
   @Test
@@ -52,7 +51,7 @@ public class FlipTest {
     hFlip1 = new Flip("Fake-flip");
     vFlip1 = new Flip("No-flip");
     hFlip2 = new Flip("Yes-flip");
-    vFlip2= new Flip("MaybeSomeTimeOrSomething:)-flip");
+    vFlip2 = new Flip("MaybeSomeTimeOrSomething:)-flip");
 
     this.hFlip1.inputImage(image1);
     this.vFlip1.inputImage(image1);
@@ -117,8 +116,6 @@ public class FlipTest {
     assertEquals("[r = 7,g = 8,b = 9]", vFlip1[1][2].toString());
     assertEquals("[r = 10,g = 11,b = 12]", vFlip1[1][3].toString());
 
-
-
     // Tests for the square (image2)
 
     // Visualization below of HFlip of Image2  V.S.   Visualization below of original image2
@@ -135,7 +132,7 @@ public class FlipTest {
     // (7,8,9)   (10,11,12)                     || (1,2,3)   (4,5,6)
     // (1,2,3)   (4,5,6)                        || (7,8,9)   (10,11,12)
     this.vFlip2.inputImage(image2);
-    Pixel[][] vFlip2= this.vFlip2.outputImage();
+    Pixel[][] vFlip2 = this.vFlip2.outputImage();
     assertEquals("[r = 7,g = 8,b = 9]", vFlip2[0][0].toString());
     assertEquals("[r = 10,g = 11,b = 12]", vFlip2[0][1].toString());
     assertEquals("[r = 1,g = 2,b = 3]", vFlip2[1][0].toString());
